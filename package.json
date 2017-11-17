@@ -1,0 +1,23 @@
+{
+	"name": "cerus-request",
+	"version": "0.0.2",
+	"description": "The request module for CerusJS",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/cerusjs/cerus-request.git"
+	},
+	"author": "cerusjs",
+	"bugs": {
+		"url": "https://github.com/cerusjs/cerus-request/issues"
+	},
+	"scripts": {
+		"test": "./node_modules/.bin/mocha tests --reporter spec"
+	},
+	"homepage": "https://github.com/cerusjs/cerus-request",
+	"dependencies": {},
+	"devDependencies": {
+		"chai": "^4.1.2",
+		"mocha": "^4.0.1"
+	}
+}
