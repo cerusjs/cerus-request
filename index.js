@@ -1,15 +1,17 @@
 module.exports = function() {
+	var plugin = {};
+	
 	var package = require("./package.json");
-
-	this.name = package["name"];
-	this.version = package["version"];
 	var request = require("./lib/request");
 
-	this.request = function() {
+	plugin.name = package["name"];
+	plugin.version = package["version"];
+
+	plugin.request = function() {
 		return new request();
 	}
 
-	return this;
+	return plugin;
 }
 
 /*
