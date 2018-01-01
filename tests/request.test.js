@@ -2,7 +2,12 @@ var expect = require("chai").expect;
 var http = require("http");
 var request = require("../index")().request;
 var server = function(func) {
-	var server_ = http.createServer(func);
+	var server_ = http.createServer(function(req, res) {
+		if(typeof func === "function") {
+			func(req, res);
+		}
+	});
+
 	return server_;
 }
 
