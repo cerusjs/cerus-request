@@ -13,7 +13,8 @@
 	},
 	"scripts": {
 		"test": "./node_modules/.bin/mocha tests --reporter spec",
-		"lint": "eslint lib/"
+		"lint": "eslint lib/",
+		"coverage": "istanbul cover node_modules/mocha/bin/_mocha tests/"
 	},
 	"homepage": "https://github.com/cerusjs/cerus-request",
 	"dependencies": {},
