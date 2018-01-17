@@ -147,7 +147,7 @@ describe("request", function() {
 			it("should throw a TypeError", function() {
 				var func = function() {
 					request()
-					.protocol();
+					.path();
 				}
 
 				expect(func).to.throw();
@@ -212,6 +212,17 @@ describe("request", function() {
 			});
 		});
 
+		context("with one string as parameters", function() {
+			it("should throw a TypeError", function() {
+				var func = function() {
+					request()
+					.header("test");
+				}
+
+				expect(func).to.throw();
+			});
+		});
+
 		context("with two strings as parameter", function() {
 			it("should send the request", function(done) {
 				var server_ = server(function(req, res) {
@@ -220,6 +231,23 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.header("Accepts", "This is a header")
+					.send(function() {
+						server_.close();
+						done();
+					});
+				});
+			});
+		});
+
+		context("with multiple headers", function() {
+			it("should send the request", function(done) {
+				var server_ = server(function(req, res) {
+					res.end();
+				});
+				server_.listen(80, function() {
+					request()
+					.header("Header1", "This is header one")
+					.header("Header2", "This is header two")
 					.send(function() {
 						server_.close();
 						done();
@@ -241,9 +269,21 @@ describe("request", function() {
 			});
 		});
 
+		context("with one string as parameters", function() {
+			it("should throw a TypeError", function() {
+				var func = function() {
+					request()
+					.cookie("test");
+				}
+
+				expect(func).to.throw();
+			});
+		});
+
 		context("with two strings as parameter", function() {
 			it("should send the request", function(done) {
 				var server_ = server(function(req, res) {
+					expect(req.headers["cookie"]).to.equal("Test=This is a cookie");
 					res.end();
 				});
 				server_.listen(80, function() {
@@ -256,9 +296,27 @@ describe("request", function() {
 				});
 			});
 		});
+
+		context("with multiple cookies", function() {
+			it("should send them both", function(done) {
+				var server_ = server(function(req, res) {
+					expect(req.headers["cookie"]).to.equal("Test1=This is cookie one; Test2=This is cookie two");
+					res.end();
+				});
+				server_.listen(80, function() {
+					request()
+					.cookie("Test1", "This is cookie one")
+					.cookie("Test2", "This is cookie two")
+					.send(function() {
+						server_.close();
+						done();
+					});
+				});
+			});
+		});
 	});
 
-	describe("#cookie", function() {
+	describe("#agent", function() {
 		context("with no parameters", function() {
 			it("should throw a TypeError", function() {
 				var func = function() {
@@ -506,8 +564,109 @@ describe("request", function() {
 		});
 	});
 
+	describe("#body", function() {
+		context("with no parameters", function() {
+			it("should throw a TypeError", function() {
+				var func = function() {
+					request().body();
+				}
+
+				expect(func).to.throw();
+			});
+		});
+
+		context("with no content-length set", function() {
+			it("should send the body with content-length" , function(done) {
+				var server_ = server(function(req, res) {
+					req.on("data", function(data) {
+						expect(data.toString()).to.equal("test");
+						res.end();
+					});
+				});
+				server_.listen(80, function() {
+					request()
+					.body("test")
+					.send(function() {
+						server_.close();
+						done();
+					});
+				});
+			});
+		});
+
+		context("with a pre-set content-length", function() {
+			it("should not override body content-length", function(done) {
+				var server_ = server(function(req, res) {
+					expect(req.headers["content-length"]).to.equal("100");
+					res.end();
+				});
+				server_.listen(80, function() {
+					request()
+					.header("content-length", "100")
+					.body("test")
+					.send(function() {
+						server_.close();
+						done();
+					});
+				});
+			});
+		});
+	});
 
 	describe("#expect", function() {
+		context("with no arguments", function() {
+			it("should throw a TypeError", function() {
+				var func = function() {
+					request().expect();
+				}
+
+				expect(func).to.throw();
+			});
+		});
+
+		context("with one string as arguments", function() {
+			it("should throw a TypeError", function() {
+				var func = function() {
+					request().expect("test");
+				}
+
+				expect(func).to.throw();
+			});
+		});
+
+		context("with a non-existant key", function() {
+			it("should throw an Error", function(done) {
+				var server_ = server(function(req, res) {
+					res.end();
+				});
+				server_.listen(80, function() {
+					request()
+					.expect("test", "test")
+					.send(function(err) {
+						var func = function() {
+							if(err) {
+								throw err;
+							}
+						}
+
+						server_.close();
+						expect(func).to.throw();
+						done();
+					});
+				});
+			});
+		});
+
+		context("with one string as arguments", function() {
+			it("should throw a TypeError", function() {
+				var func = function() {
+					request().expect("test");
+				}
+
+				expect(func).to.throw();
+			});
+		});
+
 		context("with the key 'body'", function() {
 			context("with an incorrect expectation", function() {
 				it("should throw an error", function(done) {
@@ -603,6 +762,53 @@ describe("request", function() {
 		});
 
 		context("with the key 'cookie'", function() {
+			context("with no cookies and an incorrect expectation", function() {
+				it("should throw an error", function(done) {
+					var server_ = server(function(req, res) {
+						res.end();
+					});
+					server_.listen(80, function() {
+						request()
+						.expect("cookie", "test", "non-existant")
+						.send(function(err) {
+							var func = function() {
+								if(err) {
+									throw err;
+								}
+							}
+
+							server_.close();
+							expect(func).to.throw();
+							done();
+						});
+					});
+				});
+			});
+
+			context("with a single cookie and another cookie expectation", function() {
+				it("should throw an error", function(done) {
+					var server_ = server(function(req, res) {
+						res.setHeader("set-cookie", "test2=value");
+						res.end();
+					});
+					server_.listen(80, function() {
+						request()
+						.expect("cookie", "test1", "non-existant")
+						.send(function(err) {
+							var func = function() {
+								if(err) {
+									throw err;
+								}
+							}
+
+							server_.close();
+							expect(func).to.throw();
+							done();
+						});
+					});
+				});
+			});
+
 			context("with a single cookie and an incorrect expectation", function() {
 				it("should throw an error", function(done) {
 					var server_ = server(function(req, res) {
@@ -874,6 +1080,27 @@ describe("request", function() {
 					server_.listen(80, function() {
 						request()
 						.expect("length", 5)
+						.send(function(err) {
+							server_.close();
+
+							if(err) {
+								throw err;
+							}
+
+							done();
+						});
+					});
+				});
+			});
+
+			context("with a string value expectation", function() {
+				it("shouldn't throw an error", function(done) {
+					var server_ = server(function(req, res) {
+						res.end("abcde", "utf-8");
+					});
+					server_.listen(80, function() {
+						request()
+						.expect("length", "5")
 						.send(function(err) {
 							server_.close();
 
