@@ -46,7 +46,9 @@ describe("request", function() {
 				});
 				server_.listen(80, function() {
 					request()
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+
 						server_.close();
 						done();
 					});
@@ -75,7 +77,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.host("localhost")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+
 						server_.close();
 						done();
 					});
@@ -104,7 +108,9 @@ describe("request", function() {
 				server_.listen(8080, function() {
 					request()
 					.port(8080)
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -133,7 +139,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.protocol("http:")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -162,7 +170,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.path("/test")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -191,7 +201,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.method("POST")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -231,7 +243,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.header("Accepts", "This is a header")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -248,7 +262,9 @@ describe("request", function() {
 					request()
 					.header("Header1", "This is header one")
 					.header("Header2", "This is header two")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -289,7 +305,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.cookie("Test", "This is a cookie")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -307,7 +325,9 @@ describe("request", function() {
 					request()
 					.cookie("Test1", "This is cookie one")
 					.cookie("Test2", "This is cookie two")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -336,7 +356,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.agent(false)
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -352,7 +374,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.agent(http.globalAgent)
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -381,7 +405,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.encoding("deflate")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -410,7 +436,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.language("en")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -439,7 +467,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.charset("utf-8")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -468,7 +498,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.type("text/html")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -497,7 +529,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.cache("no-cache")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -526,7 +560,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.referer("localhost")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -555,7 +591,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.timeout(10000)
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -586,7 +624,9 @@ describe("request", function() {
 				server_.listen(80, function() {
 					request()
 					.body("test")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
@@ -604,7 +644,9 @@ describe("request", function() {
 					request()
 					.header("content-length", "100")
 					.body("test")
-					.send(function() {
+					.send(function(err) {
+						if(err) throw err;
+						
 						server_.close();
 						done();
 					});
