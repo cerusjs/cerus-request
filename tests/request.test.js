@@ -1208,7 +1208,7 @@ describe("request", function() {
 
 	describe("chain", function() {
 		context("chained multiple requests", function() {
-			it("should behave normally", function() {
+			it("should behave normally", function(done) {
 				var server_ = server(function(req, res) {
 					res.end();
 				});
