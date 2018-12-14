@@ -1,21 +1,21 @@
-var expect = require("chai").expect;
-var http = require("http");
-var request = require("../index")().request;
-var server = function(func) {
-	var server_ = http.createServer(function(req, res) {
+const expect = require("chai").expect;
+const http = require("http");
+const request = require("../index")().request;
+const server = (func) => {
+	const _server = http.createServer((req, res) => {
 		if(typeof func === "function") {
 			func(req, res);
 		}
 	});
 
-	return server_;
+	return _server;
 }
 
-describe("request", function() {
-	describe("constructor", function() {
-		context("with no parameters", function() {
-			it("shouldn't throw an error", function() {
-				var func = function() {
+describe("request", () => {
+	describe("constructor", () => {
+		context("with no parameters", () => {
+			it("shouldn't throw an error", () => {
+				const func = () => {
 					request();
 				}
 
@@ -24,12 +24,12 @@ describe("request", function() {
 		});
 	});
 
-	describe("#send", function() {
-		context("with no running server", function() {
-			it("should throw an error", function() {
+	describe("#send", () => {
+		context("with no running server", () => {
+			it("should throw an error", () => {
 				request()
-				.send(function(err) {
-					var func = function() {
+				.send(err => {
+					const func = () => {
 						throw err;
 					}
 
@@ -39,17 +39,16 @@ describe("request", function() {
 		});
 
 
-		context("with a running server", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+		context("with a running server", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
+
+				_server.listen(80, () => {
 					request()
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -57,30 +56,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#host", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.host();
-				}
+	describe("#host", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.host("localhost")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -88,30 +75,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#port", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.port();
-				}
+	describe("#port", () => {
+		context("with a number as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a number as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(8080, function() {
+				_server.listen(8080, () => {
 					request()
 					.port(8080)
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -119,30 +94,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#protocol", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.protocol();
-				}
+	describe("#protocol", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.protocol("http:")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -150,30 +113,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#path", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.path();
-				}
+	describe("#path", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.path("/test")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -181,30 +132,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#method", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.method();
-				}
+	describe("#method", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.method("POST")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -212,60 +151,36 @@ describe("request", function() {
 		});
 	});
 
-	describe("#header", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.header();
-				}
+	describe("#header", () => {
+		context("with two strings as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with one string as parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.header("test");
-				}
-
-				expect(func).to.throw();
-			});
-		});
-
-		context("with two strings as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.header("Accepts", "This is a header")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
 			});
 		});
 
-		context("with multiple headers", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+		context("with multiple headers", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
+
+				_server.listen(80, () => {
 					request()
 					.header("Header1", "This is header one")
 					.header("Header2", "This is header two")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -273,62 +188,42 @@ describe("request", function() {
 		});
 	});
 
-	describe("#cookie", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.cookie();
-				}
-
-				expect(func).to.throw();
-			});
-		});
-
-		context("with one string as parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.cookie("test");
-				}
-
-				expect(func).to.throw();
-			});
-		});
-
-		context("with two strings as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
+	describe("#cookie", () => {
+		context("with two strings as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => {
 					expect(req.headers["cookie"]).to.equal("Test=This is a cookie");
 					res.end();
 				});
-				server_.listen(80, function() {
+
+				_server.listen(80, () => {
 					request()
 					.cookie("Test", "This is a cookie")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
 			});
 		});
 
-		context("with multiple cookies", function() {
-			it("should send them both", function(done) {
-				var server_ = server(function(req, res) {
+		context("with multiple cookies", () => {
+			it("should send them both", done => {
+				const _server = server((req, res) => {
 					expect(req.headers["cookie"]).to.equal("Test1=This is cookie one; Test2=This is cookie two");
 					res.end();
 				});
-				server_.listen(80, function() {
+
+				_server.listen(80, () => {
 					request()
 					.cookie("Test1", "This is cookie one")
 					.cookie("Test2", "This is cookie two")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -336,48 +231,35 @@ describe("request", function() {
 		});
 	});
 
-	describe("#agent", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.agent();
-				}
+	describe("#agent", () => {
+		context("with a boolean as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a boolean as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.agent(false)
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
 			});
 		});
 
-		context("with an agent as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+		context("with an agent as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
+
+				_server.listen(80, () => {
 					request()
 					.agent(http.globalAgent)
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -385,30 +267,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#encoding", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.encoding();
-				}
+	describe("#encoding", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.encoding("deflate")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -416,30 +286,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#language", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.language();
-				}
+	describe("#language", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.language("en")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -447,30 +305,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#charset", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.charset();
-				}
+	describe("#charset", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.charset("utf-8")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -478,30 +324,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#type", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.type();
-				}
+	describe("#type", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.type("text/html")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -509,30 +343,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#cache", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.cache();
-				}
+	describe("#cache", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.cache("no-cache")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -540,30 +362,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#referer", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.referer();
-				}
+	describe("#referer", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.referer("localhost")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -571,30 +381,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("#timeout", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request()
-					.timeout();
-				}
+	describe("#timeout", () => {
+		context("with a string as parameter", () => {
+			it("should send the request", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a string as parameter", function() {
-			it("should send the request", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.timeout(10000)
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -602,52 +400,44 @@ describe("request", function() {
 		});
 	});
 
-	describe("#body", function() {
-		context("with no parameters", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request().body();
-				}
-
-				expect(func).to.throw();
-			});
-		});
-
-		context("with no content-length set", function() {
-			it("should send the body with content-length" , function(done) {
-				var server_ = server(function(req, res) {
+	describe("#body", () => {
+		context("with no content-length set", () => {
+			it("should send the body with content-length" , done => {
+				const _server = server((req, res) => {
 					req.on("data", function(data) {
 						expect(data.toString()).to.equal("test");
 						res.end();
 					});
 				});
-				server_.listen(80, function() {
+
+				_server.listen(80, () => {
 					request()
 					.body("test")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
 			});
 		});
 
-		context("with a pre-set content-length", function() {
-			it("should not override body content-length", function(done) {
-				var server_ = server(function(req, res) {
+		context("with a pre-set content-length", () => {
+			it("should not override body content-length", done => {
+				const _server = server((req, res) => {
 					expect(req.headers["content-length"]).to.equal("100");
 					res.end();
 				});
-				server_.listen(80, function() {
+
+				_server.listen(80, () => {
 					request()
 					.header("content-length", "100")
 					.body("test")
-					.send(function(err) {
+					.send(err => {
 						if(err) throw err;
 						
-						server_.close();
+						_server.close();
 						done();
 					});
 				});
@@ -655,43 +445,20 @@ describe("request", function() {
 		});
 	});
 
-	describe("#expect", function() {
-		context("with no arguments", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request().expect();
-				}
+	describe("#expect", () => {
+		context("with a non-existant key", () => {
+			it("should throw an error", done => {
+				const _server = server((req, res) => res.end());
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with one string as arguments", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request().expect("test");
-				}
-
-				expect(func).to.throw();
-			});
-		});
-
-		context("with a non-existant key", function() {
-			it("should throw an Error", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+				_server.listen(80, () => {
 					request()
 					.expect("test", "test")
-					.send(function(err) {
-						var func = function() {
-							if(err) {
-								throw err;
-							}
-						}
+					.send(err => {
+						const func = () => {
+							if(err) throw err;
+						};
 
-						server_.close();
+						_server.close();
 						expect(func).to.throw();
 						done();
 					});
@@ -699,33 +466,20 @@ describe("request", function() {
 			});
 		});
 
-		context("with one string as arguments", function() {
-			it("should throw a TypeError", function() {
-				var func = function() {
-					request().expect("test");
-				}
+		context("with the key 'body'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => res.end("string124", "utf-8"));
 
-				expect(func).to.throw();
-			});
-		});
-
-		context("with the key 'body'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
-						res.end("string124", "utf-8");
-					});
-					server_.listen(80, function() {
+					_server.listen(80, () => {
 						request()
 						.expect("body", "string123")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
-							}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
+							};
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -733,20 +487,17 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
-						res.end("string123", "utf-8");
-					});
-					server_.listen(80, function() {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => res.end("string123", "utf-8"));
+
+					_server.listen(80, () => {
 						request()
 						.expect("body", "string123")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -755,24 +506,23 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'header'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+		context("with the key 'header'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("test", "Test");
 						res.end();
 					});
-					server_.listen(80, function() {
+					
+					_server.listen(80, () => {
 						request()
 						.expect("header", "test", "NotTest")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -780,21 +530,20 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("test", "Test");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("header", "test", "Test")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -803,23 +552,20 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'cookie'", function() {
-			context("with no cookies and an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
-						res.end();
-					});
-					server_.listen(80, function() {
+		context("with the key 'cookie'", () => {
+			context("with no cookies and an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => res.end());
+
+					_server.listen(80, () => {
 						request()
 						.expect("cookie", "test", "non-existant")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -827,23 +573,22 @@ describe("request", function() {
 				});
 			});
 
-			context("with a single cookie and another cookie expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a single cookie and another cookie expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("set-cookie", "test2=value");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("cookie", "test1", "non-existant")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -851,23 +596,22 @@ describe("request", function() {
 				});
 			});
 
-			context("with a single cookie and an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a single cookie and an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("set-cookie", "test=value");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("cookie", "test", "notvalue")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -875,21 +619,20 @@ describe("request", function() {
 				});
 			});
 
-			context("with a single cookie and a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a single cookie and a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("set-cookie", "test=value");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("cookie", "test", "value")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -897,24 +640,23 @@ describe("request", function() {
 				});
 			});
 
-			context("with multiple cookies and an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with multiple cookies and an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("set-cookie", ["test1=value1", "test2=value2"]);
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("cookie", "test1", "notvalue1")
 						.expect("cookie", "test2", "notvalue2")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -922,22 +664,21 @@ describe("request", function() {
 				});
 			});
 
-			context("with multiple cookies and a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with multiple cookies and a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("set-cookie", ["test1=value1", "test2=value2"]);
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("cookie", "test1", "value1")
 						.expect("cookie", "test2", "value2")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -946,24 +687,23 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'enc'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+		context("with the key 'enc'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("content-encoding", "utf-8");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("enc", "deflate")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -971,21 +711,20 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("content-encoding", "utf-8");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("enc", "utf-8")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -994,24 +733,23 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'type'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+		context("with the key 'type'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("content-type", "text/plain");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("type", "text/html")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -1019,21 +757,20 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("content-type", "text/plain");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("type", "text/plain")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -1042,24 +779,23 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'lang'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+		context("with the key 'lang'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("content-language", "en");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("lang", "nl")
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -1067,21 +803,20 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.setHeader("content-language", "en");
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("lang", "en")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -1090,23 +825,20 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'length'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
-						res.end("abcde", "utf-8");
-					});
-					server_.listen(80, function() {
+		context("with the key 'length'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => res.end("abcde", "utf-8"));
+
+					_server.listen(80, () => {
 						request()
 						.expect("length", 10)
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -1114,20 +846,17 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
-						res.end("abcde", "utf-8");
-					});
-					server_.listen(80, function() {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => res.end("abcde", "utf-8"));
+
+					_server.listen(80, () => {
 						request()
 						.expect("length", 5)
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -1135,20 +864,17 @@ describe("request", function() {
 				});
 			});
 
-			context("with a string value expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
-						res.end("abcde", "utf-8");
-					});
-					server_.listen(80, function() {
+			context("with a string value expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => res.end("abcde", "utf-8"));
+
+					_server.listen(80, () => {
 						request()
 						.expect("length", "5")
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -1157,24 +883,23 @@ describe("request", function() {
 			});
 		});
 
-		context("with the key 'status'", function() {
-			context("with an incorrect expectation", function() {
-				it("should throw an error", function(done) {
-					var server_ = server(function(req, res) {
+		context("with the key 'status'", () => {
+			context("with an incorrect expectation", () => {
+				it("should throw an error", done => {
+					const _server = server((req, res) => {
 						res.statusCode = 400;
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("status", 200)
-						.send(function(err) {
-							var func = function() {
-								if(err) {
-									throw err;
-								}
+						.send(err => {
+							const func = () => {
+								if(err) throw err;
 							}
 
-							server_.close();
+							_server.close();
 							expect(func).to.throw();
 							done();
 						});
@@ -1182,21 +907,20 @@ describe("request", function() {
 				});
 			});
 
-			context("with a correct expectation", function() {
-				it("shouldn't throw an error", function(done) {
-					var server_ = server(function(req, res) {
+			context("with a correct expectation", () => {
+				it("shouldn't throw an error", done => {
+					const _server = server((req, res) => {
 						res.statusCode = 400;
 						res.end();
 					});
-					server_.listen(80, function() {
+
+					_server.listen(80, () => {
 						request()
 						.expect("status", 400)
-						.send(function(err) {
-							server_.close();
+						.send(err => {
+							_server.close();
 
-							if(err) {
-								throw err;
-							}
+							if(err) throw err;
 
 							done();
 						});
@@ -1206,21 +930,18 @@ describe("request", function() {
 		});
 	});
 
-	describe("chain", function() {
-		context("chained multiple requests", function() {
-			it("should behave normally", function(done) {
-				var server_ = server(function(req, res) {
-					res.end();
-				});
-				server_.listen(80, function() {
+	describe("chain", () => {
+		context("chained multiple requests", () => {
+			it("should behave normally", done => {
+				const _server = server((req, res) => res.end());
+
+				_server.listen(80, () => {
 					request()
 					.send()
-					.send(function(err) {
-						server_.close();
+					.send(err => {
+						_server.close();
 
-						if(err) {
-							throw err;
-						}
+						if(err) throw err;
 
 						done();
 					});
